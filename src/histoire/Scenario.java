@@ -5,7 +5,7 @@ import personnages.Druide;
 import personnages.Gaulois;
 import villagegaulois.Etal;
 import villagegaulois.Village;
-
+import villagegaulois.VillageSansChefException;
 public class Scenario {
 
 	public static void main(String[] args) {
@@ -24,7 +24,13 @@ public class Scenario {
 		village.ajouterHabitant(obelix);
 		village.ajouterHabitant(druide);
 		village.ajouterHabitant(abraracourcix);
-		village.afficherVillageois();
+		
+		try {
+		    System.out.println(village.afficherVillageois());
+		} catch (VillageSansChefException e) {
+		    System.out.println("Erreur: " + e.getMessage());
+		}
+//		village.afficherVillageois();
 
 		System.out.println(village.rechercherVendeursProduit("fleurs"));
 		System.out.println(village.installerVendeur(bonemine, "fleurs", 20));
@@ -35,11 +41,22 @@ public class Scenario {
 
 		System.out.println(village.rechercherVendeursProduit("fleurs"));
 		Etal etalFleur = village.rechercherEtal(bonemine);
-		System.out.println(etalFleur.acheterProduit(10, abraracourcix));
-		System.out.println(etalFleur.acheterProduit(15, obelix));
-		System.out.println(etalFleur.acheterProduit(15, assurancetourix));
+		if (etalFleur != null) {
+			try {
+				System.out.println(etalFleur.acheterProduit(10, abraracourcix));
+				System.out.println(etalFleur.acheterProduit(15, obelix));
+				System.out.println(etalFleur.acheterProduit(15, assurancetourix));
+			} catch (IllegalArgumentException e) {
+				System.out.println("Erreur: " + e.getMessage());
+			} catch (IllegalStateException e) {
+				System.out.println("Erreur: " + e.getMessage());
+			}
+		}
+//		System.out.println(etalFleur.acheterProduit(10, abraracourcix));
+//		System.out.println(etalFleur.acheterProduit(15, obelix));
+//		System.out.println(etalFleur.acheterProduit(15, assurancetourix));
 		System.out.println(village.partirVendeur(bonemine));
 		System.out.println(village.afficherMarche());
 	}
-
+//
 }
